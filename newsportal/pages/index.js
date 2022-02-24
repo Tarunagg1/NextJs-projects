@@ -5,7 +5,7 @@ import Navigation from '../components/Navigation';
 
 export default function index() {
   return (
-    <div classNameName={styles.container}>
+    <div className={styles.container}>
 
       <h1>home</h1>
     </div>
