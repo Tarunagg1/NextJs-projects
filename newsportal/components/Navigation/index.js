@@ -1,8 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
 import { Fragment } from 'react/cjs/react.development'
+import { useStore } from '../../client/context'
+import { getValues } from '../../backend/utils/common';
+import { signOut } from "next-auth/react"
+import { authConstant } from '../../client/context/constant';
+
 
 export default function Navigation() {
+
+  const [state, dispatch] = useStore();
+  const authenticated = getValues(state, ["user", "authenticated"], null);
+  console.log(authenticated);
+
   return (
     <Fragment>
       <div className="container">
@@ -20,16 +30,34 @@ export default function Navigation() {
             </div>
             <div className="col-4 d-flex justify-content-end align-items-center">
               <a className="link-secondary" href="#" aria-label="Search">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeLinejoin="round"  strokeWidth="2" className="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5" /><path d="M21 21l-5.2-5.2" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeLinejoin="round" strokeWidth="2" className="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5" /><path d="M21 21l-5.2-5.2" /></svg>
               </a>
-              <Link href={`/login`}>
-                <a className="btn btn-sm btn-outline-secondary user-login-btn">Sign In</a>
-              </Link>
+              {
+                authenticated ? (
+                  <a
+                    className="btn btn-sm btn-outline-secondary user-login-btn"
+                    onClick={() => {
+                      signOut({
+                        redirect: false,
+                      }).then((result) => {
+                        dispatch({
+                          type: authConstant.LOGIN_FAILURE
+                        })
+                      })
+                    }}
+                  >Logout</a>
+                ) : (
+                  <>
+                    <Link href={`/login`}>
+                      <a className="btn btn-sm btn-outline-secondary user-login-btn">Sign In</a>
+                    </Link>
 
-              <Link href={`/signup`}>
-                <a className="btn btn-sm btn-outline-secondary user-login-btn">Sign up</a>
-              </Link>
-
+                    <Link href={`/signup`}>
+                      <a className="btn btn-sm btn-outline-secondary user-login-btn">Sign up</a>
+                    </Link>
+                  </>
+                )
+              }
             </div>
           </div>
         </header>

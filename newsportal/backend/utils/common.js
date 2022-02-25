@@ -15,10 +15,30 @@ export const successHandler = (data, res, statuscode) => {
 
 
 
-export const validateAll = (fields)=>{
-    for(let key in fields){
-        if(fields[key] === ""){
+export const validateAll = (fields) => {
+    for (let key in fields) {
+        if (fields[key] === "") {
             throw new Error(`${key} is required`);
         }
+    }
+}
+
+
+export const getValues = (obj, path, defaultVallue) => {
+    try {
+        if (!(obj instanceof Array)) {
+            let myValues = obj;
+            for (let key of path) {
+                if (!(key in myValues)) {
+                    return defaultVallue;
+                } else {
+                    myValues = myValues[key];
+                }
+            }
+            return myValues;
+        }
+    } catch (error) {
+        console.log(error);
+        return defaultVallue;
     }
 }
