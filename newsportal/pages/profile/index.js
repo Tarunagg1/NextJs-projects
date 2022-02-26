@@ -1,8 +1,16 @@
+import { getSession } from 'next-auth/react';
 import React from 'react'
 import { Fragment } from 'react/cjs/react.development'
 
-export const getServerSideProps = async ({ query }) => {
-    const u = await fetch(`https://jsonplaceholder.typicode.com/users/${query.id}`);
+export const getServerSideProps = async (ctx) => {
+    try {
+
+        const session = getSession({ req: ctx.req });
+    } catch (error) {
+
+    }
+
+    const u = await fetch(`https://jsonplaceholder.typicode.com/users/1`);
     const userResp = await u.json();
     return {
         props: {

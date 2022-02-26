@@ -1,0 +1,12 @@
+.post_create {
+  margin: 10ppx auto;
+}
+.post_create input,
+.post_create textarea {
+  margin-bottom: 10px;
+}
+.action{
+    margin: 10px 0;
+}
+
+

@@ -49,6 +49,7 @@ export default nextAuth({
     ],
     callbacks: {
         async session({ session, user, token }) {
+            console.log(user);
             if (user && user.id) {
                 session.user.id = user.id;
             }

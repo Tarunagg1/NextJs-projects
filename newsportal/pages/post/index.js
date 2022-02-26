@@ -14,6 +14,6 @@ export const getStaticProps = async () => {
 
 export default function Post({ post }) {
     return (
-        <div>Post by {post.title} </div>
+        <div>Post b=</div>
     )
 }

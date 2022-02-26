@@ -34,6 +34,11 @@ export default function Navigation() {
               </a>
               {
                 authenticated ? (
+                  <>
+                   <Link href={`/post/create`}>
+                      <a className="btn btn-sm btn-outline-secondary user-login-btn">Createpost</a>
+                    </Link>
+
                   <a
                     className="btn btn-sm btn-outline-secondary user-login-btn"
                     onClick={() => {
@@ -45,7 +50,8 @@ export default function Navigation() {
                         })
                       })
                     }}
-                  >Logout</a>
+                    >Logout</a>
+                    </>
                 ) : (
                   <>
                     <Link href={`/login`}>
