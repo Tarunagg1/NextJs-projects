@@ -2,8 +2,12 @@ import React from 'react'
 import styles from '../styles/Navbar.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
 export default function Navbar() {
+
+    const { quantity } = useSelector(state => state.cart);
+
     return (
         <div className={styles.container}>
             <div className={styles.item}>
@@ -31,12 +35,12 @@ export default function Navbar() {
                 </ul>
             </div>
             <div className={styles.item}>
-                <div className={`${styles.cart} pointer`}>
-                    <Link href="cart">
+                <Link href="/cart">
+                    <div className={`${styles.cart} pointer`}>
                         <Image src="/img/cart.png" alt="" width="40px" height="40px" />
-                    </Link>
-                    <div className={styles.counter}>2</div>
-                </div>
+                        <div className={styles.counter}>{quantity}</div>
+                    </div>
+                </Link>
             </div>
             {/* <div className={styles.item}>right</div> */}
         </div>
