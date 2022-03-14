@@ -2,12 +2,14 @@ import styles from "../styles/Cart.module.css";
 import Image from "next/image";
 import { useDispatch, useSelector } from 'react-redux';
 import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-
+import { reset } from '../store/cart.slice';
+import axios from 'axios';
 
 const Cart = () => {
     const { products, quantity, total } = useSelector(state => state.cart);
+    const [open, setOpen] = useState(true);
     const amount = total;
     const currency = "USD";
     const style = { layout: "vertical" };
@@ -84,9 +86,6 @@ const Cart = () => {
         );
     };
 
-
-
-    console.log(products);
     return (
         <div className={styles.container}>
             <div className={styles.left}>
@@ -150,17 +149,26 @@ const Cart = () => {
                     <div className={styles.totalText}>
                         <b className={styles.totalTextTitle}>Total:</b>$ {total}
                     </div>
-                    <button className={styles.button}>CHECKOUT NOW!</button>
-                    <PayPalScriptProvider
-                        options={{
-                            "client-id":"ATTL8fDJKfGzXNH4VVuDy1qW4_Jm8S0sqmnUTeYtWpqxUJLnXIn90V8YIGDg-SNPaB70Hg4mko_fde4-",
-                            components: "buttons",
-                            currency: "USD",
-                            "disable-funding": "credit,card,p24",
-                        }}
-                    >
-                        <ButtonWrapper currency={currency} showSpinner={false} />
-                    </PayPalScriptProvider>
+                    {
+                        open ? (
+                            <div className={styles.paymentMethods}>
+                                <button onClick={() => createOrder({ customer: "random", address: "ih7ug7y", total, method: 1 })} className={styles.payButton}>CASH ON DELIVERY</button>
+                                <PayPalScriptProvider
+                                    options={{
+                                        // "client-id":"ATTL8fDJKfGzXNH4VVuDy1qW4_Jm8S0sqmnUTeYtWpqxUJLnXIn90V8YIGDg-SNPaB70Hg4mko_fde4-",
+                                        "client-id": "test",
+                                        components: "buttons",
+                                        currency: "USD",
+                                        "disable-funding": "credit,card,p24",
+                                    }}
+                                >
+                                    <ButtonWrapper currency={currency} showSpinner={false} />
+                                </PayPalScriptProvider>
+                            </div>
+                        ) : (
+                            <button className={styles.button}>CHECKOUT NOW!</button>
+                        )
+                    }
                 </div>
             </div>
         </div>

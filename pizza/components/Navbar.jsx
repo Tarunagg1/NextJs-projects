@@ -26,7 +26,9 @@ export default function Navbar() {
             <div className={styles.ss}>
                 <ul className={styles.list}>
                     <li className={styles.listItem}>Home</li>
-                    <li className={styles.listItem}>Products</li>
+                    <Link href="/admin">
+                        <li className={styles.listItem}>Admin</li>
+                    </Link>
                     <li className={styles.listItem}>Menu</li>
                     <Image src="/img/logo.png" alt="" width="60px" height="60px" />
                     <li className={styles.listItem}>Events</li>
@@ -42,7 +44,6 @@ export default function Navbar() {
                     </div>
                 </Link>
             </div>
-            {/* <div className={styles.item}>right</div> */}
         </div>
     )
 }

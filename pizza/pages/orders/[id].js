@@ -1,8 +1,18 @@
 import styles from "../../styles/Order.module.css";
 import Image from "next/image";
+import axios from 'axios';
 
-const Order = () => {
-    const status = 0;
+export const getServerSideProps = async ({ params }) => {
+    const { data } = await axios.get(`http://localhost:3000/api/orders/${params.id}`);
+    return {
+        props: {
+            pizza: data
+        }
+    }
+}
+
+const Order = ({ pizza }) => {
+    const status = pizza.status;
 
     const statusClass = (index) => {
         if (index - status < 1) return styles.done;
@@ -22,16 +32,16 @@ const Order = () => {
                         </tr>
                         <tr className={styles.tr}>
                             <td>
-                                <span className={styles.id}>129837819237</span>
+                                <span className={styles.id}>{pizza._id}</span>
                             </td>
                             <td>
-                                <span className={styles.name}>John Doe</span>
+                                <span className={styles.name}>{pizza.name}</span>
                             </td>
                             <td>
-                                <span className={styles.address}>Elton st. 212-33 LA</span>
+                                <span className={styles.address}>{pizza.address}</span>
                             </td>
                             <td>
-                                <span className={styles.total}>$79.80</span>
+                                <span className={styles.total}>$ {pizza.total}</span>
                             </td>
                         </tr>
                     </table>
@@ -101,7 +111,7 @@ const Order = () => {
                         <b className={styles.totalTextTitle}>Discount:</b>$0.00
                     </div>
                     <div className={styles.totalText}>
-                        <b className={styles.totalTextTitle}>Total:</b>$79.60
+                        <b className={styles.totalTextTitle}>Total:</b>$ {pizza.total}
                     </div>
                     <button disabled className={styles.button}>
                         PAID
