@@ -1,18 +1,18 @@
 import React from 'react';
 import Link from 'next/link'
 
-function tshirts() {
+function mugs() {
   let arr = [1, 2, 25, 5, 5, 5, 5, 5, 55, 5, 5];
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-24 mx-auto">
-        <div className="flex flex-wrap -m-4 justify-center">
+        <div className="flex flex-wrap -m-4">
           {
             arr.map((ele, i) => (
               <Link key={i} href={`/product/${i}`}>
                 <div className="lg:w-1/5 md:w-1/2 p-4 w-full cursor-pointer shadow-lg m-5">
                   <a className="block relative  rounded overflow-hidden">
-                    <img alt="ecommerce" className="m-auto md:m-0 h-{30vh} md:h-{60vh} block" src="https://m.media-amazon.com/images/I/71umrqiGonL._UX679_.jpg" />
+                    <img alt="ecommerce" className="m-auto md:m-0 h-{30vh} md:h-{60vh} block" src="https://m.media-amazon.com/images/I/61d9gtFUTQL._AC_UL480_FMwebp_QL65_.jpg" />
                   </a>
                   <div className="mt-4 text-center md:text-left">
                     <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">T-Shirts</h3>
@@ -33,4 +33,4 @@ function tshirts() {
   )
 }
 
-export default tshirts
+export default mugs
