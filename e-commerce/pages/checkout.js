@@ -1,8 +1,8 @@
 import React from 'react'
-import { AiOutlinePlusCircle, AiOutlineMinusCircle,AiFillLock } from 'react-icons/ai';
+import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiFillLock } from 'react-icons/ai';
 import Link from 'next/link';
 
-function checkout() {
+function checkout({ cart, addToCart, removeFromCart,subTotal }) {
   return (
     <div className="container px-2 sm:m-auto">
       <div className="deliverydetails">
@@ -66,18 +66,22 @@ function checkout() {
         <h1 className="font-bold text-center text-3xl my-8">Review Cart items & pay</h1>
         <div className=" sideCart right-0 bg-pink-100 my-4 py-6 px-6 br-white z-20">
           <ol className="list-decimal font-semibold">
-            <li className="">
-              <div className="item flex m-2">
-                <div className="font-semibold">Tshirt - Wear the code</div>
-                <div className="flex item-center justify-center w-1/3 font-semibold text-lg">
-                  <AiOutlineMinusCircle className="cursor-pointer text-pink-500" />
-                  <span style={{ marginTop: '-4px' }} className="mx-2">1</span>
-                  <AiOutlinePlusCircle className="cursor-pointer text-pink-500" />
-                </div>
-              </div>
-            </li>
+            {
+              Object.keys(cart).map((ele, i) => (
+                <li key={i}>
+                  <div className="item flex m-2">
+                    <div className="font-semibold">{cart[ele].name}</div>
+                    <div className="flex item-center justify-center w-1/3 font-semibold text-lg">
+                      <AiOutlineMinusCircle onClick={() => removeFromCart(ele, 1)} className="cursor-pointer text-pink-500" />
+                      <span style={{ marginTop: '-4px' }} className="mx-2">{cart[ele].qty}</span>
+                      <AiOutlinePlusCircle onClick={() => addToCart(ele, 1)} className="cursor-pointer text-pink-500" />
+                    </div>
+                  </div>
+                </li>
+              ))
+            }
           </ol>
-          <span className="total font-bold">Subtotal: 100</span>
+          <span className="total font-bold">Subtotal: {subTotal}</span>
         </div>
         <div className="mx-4">
           <Link href="/checkout"><button className="flex mr-2 text-white bg-pink-500 border-0 py-2 px-2 focus:outline-none hover:bg-pink-600 rounded text-sm"><AiFillLock className="m-1" /> Pay ₹ 100</button></Link>

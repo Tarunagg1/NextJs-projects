@@ -7,7 +7,6 @@ const productSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-   
     title: { type: String, required: true },
     description: { type: String, required: true },
     img: { type: String, required: true },
@@ -16,6 +15,7 @@ const productSchema = new mongoose.Schema({
     color: { type: String },
     price: { type: Number, required: true },
     avilableQty: { type: String, required: true },
-},{timestamps: true});
+}, { timestamps: true });
 
-export default mongoose.model('Product',productSchema);
+mongoose.models = {};
+export default mongoose.model('Product', productSchema);

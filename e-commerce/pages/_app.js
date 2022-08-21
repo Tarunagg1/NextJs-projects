@@ -14,6 +14,7 @@ function MyApp({ Component, pageProps }) {
     try {
       if (cart) {
         setCart(JSON.parse(cart));
+        saveCart(JSON.parse(cart))
       }
     } catch (error) {
       console.log(error);
