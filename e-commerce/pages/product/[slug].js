@@ -129,4 +129,14 @@ function Slug({addToCart}) {
   )
 }
 
+
+export async function getServerSideProps(context) {
+  const products = await fetch("http://localhost:3000/api/getProducts");
+  const data = await products.json();
+  return {
+    props: { products: data.data }
+  }
+}
+
+
 export default Slug
