@@ -1,9 +1,18 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import mongoose from 'mongoose';
+import productModel from '../../models/product.model';
 
-function Slug({addToCart}) {
+
+function Slug({ addToCart, product, varients }) {
   const [pincode, setpincode] = useState('');
   const [service, setService] = useState(null);
+
+  const [color, setColor] = useState(product.color)
+  const [sizes, setAllSizes] = useState(["S", "M", "L", "XL", "XXL"])
+
+  const [size, setSize] = useState(product.size)
+
 
   const router = useRouter();
   const { slug } = router.query;
@@ -17,7 +26,13 @@ function Slug({addToCart}) {
     } else {
       setService(false)
     }
-    console.log(service);
+  }
+
+  const refreshVariant = (newSize, newColor) => {
+    console.log(varients, newSize, newColor);
+    // console.log(varients[newColor][newSize]['slug']);
+    const url = `http://localhost:3000/product/${varients[newColor][newSize]['slug']}`;
+    window.location = url;
   }
 
   return (
@@ -70,18 +85,25 @@ function Slug({addToCart}) {
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
                   <span className="mr-3">Color</span>
-                  <button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button>
-                  <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
-                  <button className="border-2 border-gray-300 ml-1 bg-pink-500 rounded-full w-6 h-6 focus:outline-none"></button>
+                  {
+                    Object.keys(varients).map((ele, i) => {
+                      {
+                        return Object.keys(varients[ele]).includes(size) && <button key={i} onClick={() => refreshVariant(size, ele)} className={`border-2 bg-${ele}-700 border-gray-300 rounded-full w-6 h-6 focus:outline-none ${color === ele ? "border-black" : "border-gray-300"}`}></button>
+                      }
+                    })
+                  }
+                  {/* <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
+                  <button className="border-2 border-gray-300 ml-1 bg-pink-500 rounded-full w-6 h-6 focus:outline-none"></button> */}
                 </div>
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
-                    <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
-                      <option>SM</option>
-                      <option>M</option>
-                      <option>L</option>
-                      <option>XL</option>
+                    <select onChange={(e) => refreshVariant(e.target.value,color)} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
+                      {
+                        sizes.map((ele, i) => (
+                          Object.keys(varients[color]).includes(ele) && <option>{ele}</option>
+                        ))
+                      }
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                       <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4" viewBox="0 0 24 24">
@@ -93,7 +115,7 @@ function Slug({addToCart}) {
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">$499.00</span>
-                <button onClick={() => addToCart(1,1,"Tshirt - Wear the code","m","black",100)} className="flex ml-14 text-white bg-pink-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-pink-600 rounded">Add to cart</button>
+                <button onClick={() => addToCart(1, 1, "Tshirt - Wear the code", "m", "black", 100)} className="flex ml-14 text-white bg-pink-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-pink-600 rounded">Add to cart</button>
                 <button className="flex ml-4 text-white bg-pink-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-pink-600 rounded">Buy now</button>
 
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
@@ -131,12 +153,25 @@ function Slug({addToCart}) {
 
 
 export async function getServerSideProps(context) {
-  const products = await fetch("http://localhost:3000/api/getProducts");
-  const data = await products.json();
+  if (!mongoose.connections[0].readyState) {
+    await mongoose.connect(process.env.MONGO_DB);
+  }
+
+  const product = await productModel.findOne({ slug: context.query.slug });
+  const varients = await productModel.find({ title: product.title });
+  let colorSizeSlug = {};
+  
+  for (let item of varients) {
+    if (Object.keys(colorSizeSlug).includes(item.color)) {
+      colorSizeSlug[item.color][item.size] = { slug: item.slug }
+    } else {
+      colorSizeSlug[item.color] = {};
+      colorSizeSlug[item.color][item.size] = { slug: item.slug }
+    }
+  }
   return {
-    props: { products: data.data }
+    props: { varients: JSON.parse(JSON.stringify(colorSizeSlug)), product: JSON.parse(JSON.stringify(product)) }
   }
 }
 
-
-export default Slug
+export default Slug;
