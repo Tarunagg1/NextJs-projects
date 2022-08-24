@@ -2,11 +2,12 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import mongoose from 'mongoose';
 import productModel from '../../models/product.model';
+import { ToastContainer, toast } from 'react-toastify';
 
 
-function Slug({ addToCart, product, varients }) {
+function Slug({ addToCart, product, varients, buyNow }) {
+  // console.log(product);
   const [pincode, setpincode] = useState('');
-  const [service, setService] = useState(null);
 
   const [color, setColor] = useState(product.color)
   const [sizes, setAllSizes] = useState(["S", "M", "L", "XL", "XXL"])
@@ -15,35 +16,37 @@ function Slug({ addToCart, product, varients }) {
 
 
   const router = useRouter();
-  const { slug } = router.query;
 
 
   const checkAvilabillity = async () => {
     const pins = await fetch('http://localhost:3000/api/pincode');
     const pinCodeArr = await pins.json();
     if (pinCodeArr.includes(pincode)) {
-      setService(true)
+      toast.success("Yay! this pincode is serviceable")
     } else {
-      setService(false)
+      toast.error("Sorry!! We do not deliver on this pincode")
     }
   }
 
   const refreshVariant = (newSize, newColor) => {
-    console.log(varients, newSize, newColor);
+    // console.log(varients, newSize, newColor);
     // console.log(varients[newColor][newSize]['slug']);
     const url = `http://localhost:3000/product/${varients[newColor][newSize]['slug']}`;
     window.location = url;
   }
 
+
+
   return (
     <div>
+      <ToastContainer />
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-16 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
-            <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto px-24 object-cover object-top rounded" src="https://m.media-amazon.com/images/I/71umrqiGonL._UX679_.jpg" />
+            <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto px-24 object-cover object-top rounded" src={product.img} />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-              <h2 className="text-sm title-font text-gray-500 tracking-widest">BRAND NAME</h2>
-              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">The Catcher in the Rye</h1>
+              <h2 className="text-sm title-font text-gray-500 tracking-widest">Codeswear</h2>
+              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} ({product.color}/{product.size})</h1>
               <div className="flex mb-4">
                 <span className="flex items-center">
                   <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-pink-500" viewBox="0 0 24 24">
@@ -81,7 +84,9 @@ function Slug({ addToCart, product, varients }) {
                   </a>
                 </span>
               </div>
-              <p className="leading-relaxed">Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan.</p>
+              <p className="leading-relaxed">
+                {product?.description}
+              </p>
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
                   <span className="mr-3">Color</span>
@@ -98,7 +103,7 @@ function Slug({ addToCart, product, varients }) {
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
-                    <select onChange={(e) => refreshVariant(e.target.value,color)} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
+                    <select onChange={(e) => refreshVariant(e.target.value, color)} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
                       {
                         sizes.map((ele, i) => (
                           Object.keys(varients[color]).includes(ele) && <option>{ele}</option>
@@ -114,9 +119,9 @@ function Slug({ addToCart, product, varients }) {
                 </div>
               </div>
               <div className="flex">
-                <span className="title-font font-medium text-2xl text-gray-900">$499.00</span>
-                <button onClick={() => addToCart(1, 1, "Tshirt - Wear the code", "m", "black", 100)} className="flex ml-14 text-white bg-pink-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-pink-600 rounded">Add to cart</button>
-                <button className="flex ml-4 text-white bg-pink-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-pink-600 rounded">Buy now</button>
+                <span className="title-font font-medium text-2xl text-gray-900">₹ {product.price}.00</span>
+                <button onClick={() => addToCart(product._id, 1, product.slug, product.size, product.color, product.price)} className="flex ml-14 text-white bg-pink-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-pink-600 rounded">Add to cart</button>
+                <button onClick={() => buyNow(product._id, 1, product.slug, product.size, product.color, product.price)} className="flex ml-4 text-white bg-pink-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-pink-600 rounded">Buy now</button>
 
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
@@ -128,7 +133,7 @@ function Slug({ addToCart, product, varients }) {
                 <input type="number" value={pincode} onChange={(e) => setpincode(e.target.value)} className="px-2 border-2 border-gray-400 rounded-md" placeholder="Enter pincode" type="text" />
                 <button onClick={checkAvilabillity} className="flex mr-2 text-white bg-pink-500 border-0 py-2 px-2 focus:outline-none hover:bg-pink-600 rounded text-sm"> Check avilability</button>
               </div>
-              {
+              {/* {
                 !service && service !== null && (
                   <div className="text-red-700 mt-3 text-sm">
                     Sorry!! We do not deliver on this pincode
@@ -142,7 +147,7 @@ function Slug({ addToCart, product, varients }) {
                     Yay! this pincode is serviceable
                   </div>
                 )
-              }
+              } */}
             </div>
           </div>
         </div>
@@ -160,7 +165,7 @@ export async function getServerSideProps(context) {
   const product = await productModel.findOne({ slug: context.query.slug });
   const varients = await productModel.find({ title: product.title });
   let colorSizeSlug = {};
-  
+
   for (let item of varients) {
     if (Object.keys(colorSizeSlug).includes(item.color)) {
       colorSizeSlug[item.color][item.size] = { slug: item.slug }

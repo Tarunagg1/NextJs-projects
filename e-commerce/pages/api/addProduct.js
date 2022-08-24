@@ -20,3 +20,17 @@ async function handler(req, res) {
 }
 
 export default connectDB(handler)
+
+// [
+//     {
+//     "slug":"tshirt-black-jacgreenM",
+//     "title": "Wear the code",
+//     "description": "some random text",
+//     "img": "https://m.media-amazon.com/images/I/71ODYpKSi2L._AC_UL480_FMwebp_QL65_.jpg",
+//     "category":"tshirts",
+//     "size": "M",
+//     "color": "green",
+//     "price":"100",
+//     "avilableQty": "10"
+// }
+// ]

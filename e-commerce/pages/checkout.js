@@ -70,7 +70,7 @@ function checkout({ cart, addToCart, removeFromCart,subTotal }) {
               Object.keys(cart).map((ele, i) => (
                 <li key={i}>
                   <div className="item flex m-2">
-                    <div className="font-semibold">{cart[ele].name}</div>
+                    <div className="font-semibold">{cart[ele].name} ( {cart[ele].size}/{cart[ele].varient} )</div>
                     <div className="flex item-center justify-center w-1/3 font-semibold text-lg">
                       <AiOutlineMinusCircle onClick={() => removeFromCart(ele, 1)} className="cursor-pointer text-pink-500" />
                       <span style={{ marginTop: '-4px' }} className="mx-2">{cart[ele].qty}</span>

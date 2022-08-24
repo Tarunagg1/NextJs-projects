@@ -6,7 +6,7 @@ import { BsFillBagCheckFill } from 'react-icons/bs';
 import { MdAccountCircle } from 'react-icons/md';
 
 
-function Navbar({ cart, removeFromCart, clearCart, subTotal,addToCart }) {
+function Navbar({ cart, removeFromCart, clearCart, subTotal, addToCart }) {
     const navRef = useRef();
 
     const toggleCart = () => {
@@ -26,10 +26,10 @@ function Navbar({ cart, removeFromCart, clearCart, subTotal,addToCart }) {
             </Link>
             <div className="nav">
                 <ul className="flex item-center space-x-4 font-bold md:text-md">
-                    <Link href="/tshirts"><li className="cursor-pointer"><a>Tshirts</a></li></Link>
-                    <Link href="/hoodies"><li className="cursor-pointer"><a>Hoodies</a></li></Link>
-                    <Link href="/stickers"><li className="cursor-pointer"><a>Stickers</a></li></Link>
-                    <Link href="/mugs"><li className="cursor-pointer"><a>Mugs</a></li></Link>
+                    <Link href="/tshirts"><li className="cursor-pointer hover:text-pink-700"><a>Tshirts</a></li></Link>
+                    <Link href="/hoodies"><li className="cursor-pointer hover:text-pink-700"><a>Hoodies</a></li></Link>
+                    <Link href="/stickers"><li className="cursor-pointer hover:text-pink-700"><a>Stickers</a></li></Link>
+                    <Link href="/mugs"><li className="cursor-pointer hover:text-pink-700"><a>Mugs</a></li></Link>
                 </ul>
             </div>
             <div className="cart absolute right-0 mx-5 top-4 flex">
@@ -38,7 +38,7 @@ function Navbar({ cart, removeFromCart, clearCart, subTotal,addToCart }) {
                 </Link>
                 <AiOutlineShoppingCart onClick={toggleCart} className="text-xl md:text-3xl cursor-pointer" />
             </div>
-            <div ref={navRef} className="w-72 h-[100vh] sideCart absolute top-0 right-0 bg-pink-100 py-10 px-6 transform transition-transform translate-x-full br-white z-20">
+            <div ref={navRef} className="w-72 h-[100vh] sideCart overflow-y-scroll absolute top-0 right-0 bg-pink-100 py-10 px-6 transform transition-transform translate-x-full br-white z-20">
                 <h2 className="font-bold text-xl text-center">shopping cart</h2>
                 <span onClick={toggleCart} className="absolute top-0 right-2 cursor-pointer text-2xl text-pink-500">
                     <AiFillCloseCircle /></span>
