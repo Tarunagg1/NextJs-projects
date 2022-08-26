@@ -1,16 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import {MdAccountCircle} from ''
 import Image from 'next/image';
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 function signup() {
+  const router = useRouter();
 
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: ""
-  })
+  });
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      router.push('/');
+    }
+  }, [])
 
   const handelOnchange = (e) => {
 

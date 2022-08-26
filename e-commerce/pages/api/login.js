@@ -10,7 +10,7 @@ async function handler(req, res) {
         return res.status(400).json({ message: 'Invalid request' })
     }
     const { email, password } = req.body;
-    
+
     try {
         const data = await userModel.findOne({ email: email });
         if (data) {
@@ -18,15 +18,16 @@ async function handler(req, res) {
             let dcPass = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
             if (password === dcPass) {
-                return res.status(200).json({ message: 'login user successfully', data: { email: data.email, password: data.password } });
+                const token = jwt.sign({ email: data.email, name: data.name }, process.env.SECRET_KEY, { expiresIn: '2d' });
+                return res.status(200).json({ success: true, message: 'login user successfully', data: { email: data.email, password: data.password }, token });
             }
-            return res.status(400).json({ message: 'invalid email or password' })
+            return res.status(400).json({ success: false, message: 'invalid email or password' })
         } else {
-            return res.status(400).json({ message: 'invalid email or password' })
+            return res.status(400).json({ success: false, message: 'invalid email or password' })
         }
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Error while login' })
+        return res.status(500).json({ success: false, message: 'Error while login' })
     }
 }
 

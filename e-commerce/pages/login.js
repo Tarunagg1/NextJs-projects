@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import {MdAccountCircle} from ''
 import Image from 'next/image';
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { useRouter } from 'next/router';
 
 function login() {
+  const router = useRouter();
+
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -14,6 +16,13 @@ function login() {
   const handelOnchange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   }
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      router.push('/');
+    }
+  }, [])
+
 
   const handelSubmit = async (e) => {
     console.log(user);
@@ -29,12 +38,20 @@ function login() {
 
       const data = await resp.json();
 
-      setUser({
-        email: "",
-        password: ""
-      });
+      if (data.success) {
+        localStorage.setItem("token", data.token);
 
-      toast.success("user login success")
+        setUser({
+          email: "",
+          password: ""
+        });
+        toast.success("user login success")
+
+      } else {
+        toast.error(data.message)
+      }
+
+
     } catch (error) {
       toast.error("Something went wrong")
     }

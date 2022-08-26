@@ -6,4 +6,4 @@ function about() {
   )
 }
 
-export default about
+export default about;
