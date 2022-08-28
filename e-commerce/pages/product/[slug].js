@@ -93,7 +93,7 @@ function Slug({ addToCart, product, varients, buyNow }) {
                   {
                     Object.keys(varients).map((ele, i) => {
                       {
-                        return Object.keys(varients[ele]).includes(size) && <button key={i} onClick={() => refreshVariant(size, ele)} className={`border-2 bg-${ele}-700 border-gray-300 rounded-full w-6 h-6 focus:outline-none ${color === ele ? "border-black" : "border-gray-300"}`}></button>
+                        return Object.keys(varients[ele]).includes(size) && <button key={i*i} onClick={() => refreshVariant(size, ele)} className={`border-2 bg-${ele}-700 border-gray-300 rounded-full w-6 h-6 focus:outline-none ${color === ele ? "border-black" : "border-gray-300"}`}></button>
                       }
                     })
                   }
@@ -106,7 +106,7 @@ function Slug({ addToCart, product, varients, buyNow }) {
                     <select onChange={(e) => refreshVariant(e.target.value, color)} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
                       {
                         sizes.map((ele, i) => (
-                          Object.keys(varients[color]).includes(ele) && <option>{ele}</option>
+                          Object.keys(varients[color]).includes(ele) && <option key={i*2}>{ele}</option>
                         ))
                       }
                     </select>

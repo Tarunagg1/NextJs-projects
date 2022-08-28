@@ -28,7 +28,7 @@ function login() {
     console.log(user);
     e.preventDefault();
     try {
-      const resp = await fetch("http://localhost:3000/api/login", {
+      const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -110,6 +110,7 @@ function MyApp({ Component, pageProps }) {
     localStorage.removeItem('token');
     setkey(Math.random());
     setuser({ value: null });
+    router.push('/');
   }
 
 
@@ -121,7 +122,7 @@ function MyApp({ Component, pageProps }) {
       progress={progress}
       onLoaderFinished={() => setProgress(0)}
     />
-    <Navbar key={key} logout={logout} user={user} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
+    {key && <Navbar key={key} logout={logout} user={user} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />}
     <Component buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} {...pageProps} />
     <Footer />
   </>

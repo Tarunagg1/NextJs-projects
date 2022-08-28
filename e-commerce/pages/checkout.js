@@ -1,10 +1,15 @@
 import React from 'react'
 import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiFillLock } from 'react-icons/ai';
 import Link from 'next/link';
+import Head from 'next/head';
+import Script from 'next/script';
 
-function checkout({ cart, addToCart, removeFromCart,subTotal }) {
+function checkout({ cart, addToCart, removeFromCart, subTotal }) {
   return (
     <div className="container px-2 sm:m-auto">
+      <Head>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+      </Head>
       <div className="deliverydetails">
         <h1 className="font-bold text-center text-3xl my-8">Checkout</h1>
         <h2 className="font-semibold text-xl">1. Delivey details</h2>

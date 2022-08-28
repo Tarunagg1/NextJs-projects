@@ -44,8 +44,8 @@ function Navbar({ cart, removeFromCart, clearCart, subTotal, addToCart, user, lo
                         dropDown && (
                             <div onMouseOver={() => setDropDown(true)} onMouseLeave={() => setDropDown(false)} className="absolute right-8 mx-5 bg-white shadow-lg border- top-5 py-2 px-5 w-36">
                                 <ul>
-                                    <Link href={"/orders"}><li className="cursor-pointer py-2 text-sm hover:text-pink-700 font-bold">My Account</li></Link>
-                                    <Link href={"/order"}><li className="cursor-pointer py-2 text-sm hover:text-pink-700 font-bold">Orders</li></Link>
+                                    <Link href={"/myaccount"}><li className="cursor-pointer py-2 text-sm hover:text-pink-700 font-bold">My Account</li></Link>
+                                    <Link href={"/orders"}><li className="cursor-pointer py-2 text-sm hover:text-pink-700 font-bold">Orders</li></Link>
                                     <li onClick={logout} className="cursor-pointer py-2 text-sm hover:text-pink-700 font-bold">Logout</li>
                                 </ul>
                             </div>

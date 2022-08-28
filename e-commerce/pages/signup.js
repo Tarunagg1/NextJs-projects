@@ -29,7 +29,7 @@ function signup() {
     console.log(user);
     e.preventDefault();
     try {
-      const resp = await fetch("http://localhost:3000/api/signup", {
+      const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
