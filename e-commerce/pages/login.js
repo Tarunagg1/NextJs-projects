@@ -46,6 +46,7 @@ function login() {
           password: ""
         });
         toast.success("user login success")
+        router.push('/');
 
       } else {
         toast.error(data.message)
